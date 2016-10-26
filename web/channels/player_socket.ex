@@ -1,8 +1,9 @@
-defmodule SudokuWar.UserSocket do
+defmodule SudokuWar.PlayerSocket do
   use Phoenix.Socket
 
   ## Channels
   # channel "room:*", SudokuWar.RoomChannel
+  channel "lobby", SudokuWar.LobbyChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,9 +20,10 @@ defmodule SudokuWar.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"id" => player_id}, socket) do
+    {:ok, assign(socket, :player_id, player_id)}
   end
+  def connect(_, _socket), do: :error
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
@@ -33,5 +35,5 @@ defmodule SudokuWar.UserSocket do
   #     SudokuWar.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  def id(socket), do: "player_socket:#{socket.assigns.player_id}"
 end

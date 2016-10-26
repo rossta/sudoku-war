@@ -1,6 +1,8 @@
 defmodule SudokuWar do
   use Application
 
+  @id_length Application.get_env(:sudoku_war, :id_length)
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -14,6 +16,7 @@ defmodule SudokuWar do
       supervisor(SudokuWar.Endpoint, []),
       # Start your own worker by calling: SudokuWar.Worker.start_link(arg1, arg2, arg3)
       # worker(SudokuWar.Worker, [arg1, arg2, arg3]),
+      supervisor(SudokuWar.Game.Supervisor, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -27,5 +30,19 @@ defmodule SudokuWar do
   def config_change(changed, _new, removed) do
     SudokuWar.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  def generate_player_id do
+    @id_length
+    |> :crypto.strong_rand_bytes
+    |> Base.url_encode64()
+    |> binary_part(0, @id_length)
+  end
+
+  def generate_game_id do
+    @id_length
+    |> :crypto.strong_rand_bytes
+    |> Base.url_encode64()
+    |> binary_part(0, @id_length)
   end
 end

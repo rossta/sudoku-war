@@ -20,11 +20,14 @@ var neat = require('bourbon-neat').includePaths
 var bourbon = require('bourbon').includePaths
 
 module.exports = {
-  entry: './web/static/js/app.js',
+  entry: {
+    home: './web/static/js/home.js',
+    app: './web/static/js/app.js'
+  },
 
   output: {
     path: './priv/static/',
-    filename: 'js/app.js'
+    filename: 'js/[name].js'
   },
 
   devtool: 'source-map',
@@ -39,7 +42,6 @@ module.exports = {
       exclude: /(node_modules|bower_components)/,
       loader: 'babel',
       query: {
-        presets: ['es2015'],
         plugins: ['transform-object-rest-spread']
       }
     }, {

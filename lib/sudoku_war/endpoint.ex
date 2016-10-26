@@ -1,7 +1,7 @@
 defmodule SudokuWar.Endpoint do
   use Phoenix.Endpoint, otp_app: :sudoku_war
 
-  socket "/socket", SudokuWar.UserSocket
+  socket "/socket", SudokuWar.PlayerSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
