@@ -22,7 +22,10 @@ var bourbon = require('bourbon').includePaths
 module.exports = {
   entry: {
     home: './web/static/js/home.js',
-    app: './web/static/js/app.js'
+    app: [
+      './web/static/css/app.scss',
+      './web/static/js/app.js'
+    ]
   },
 
   output: {
@@ -46,6 +49,7 @@ module.exports = {
       }
     }, {
       test: /\.(sass|scss)$/,
+      exclude: /(node_modules|bower_components)/,
       loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!import-glob')
     }]
   },

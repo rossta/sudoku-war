@@ -1,0 +1,12 @@
+.container { @include outer-container; }
+
+.row { @include row; }
+
+.columns.large-9 { @include span-columns(9); }
+.columns.large-6 { @include span-columns(6); }
+.columns.large-3 { @include span-columns(3); }
+.columns.small-12 {
+  @include media($mobile) {
+    @include span-columns(12);
+  }
+}
