@@ -18,6 +18,7 @@ defmodule SudokuWar.Router do
 
     get "/", PageController, :index
     get "/play", PlayController, :index
+    get "/play/*path", PlayController, :index
   end
 
   # Other scopes may use custom stacks.

@@ -7,6 +7,19 @@ defmodule LobbyTest do
   test "visit lobby" do
     navigate_to("/play")
 
-    find_element(:class, "lobby-welcome") |> visible_text == "Let's play!"
+    header = find_element(:class, "lobby-welcome") |> visible_text
+
+    assert header =~ "Let's play!"
+
+    # display games
+  end
+
+  test "start new game" do
+    navigate_to("/play")
+
+    click({:link_text, "Start new game"})
+
+    assert visible_page_text =~ "Instructions"
+    assert visible_page_text =~ "Set up board"
   end
 end

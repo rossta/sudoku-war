@@ -24,6 +24,7 @@ defmodule SudokuWar.LobbyChannelTest do
   test "new_game replies with new game id", %{socket: socket} do
     ref = push socket, "new_game"
     assert_reply ref, :ok, %{game_id: game_id}
+    assert 8 = String.length(game_id)
   end
   #
   # test "broadcasts are pushed to the client", %{socket: socket} do
