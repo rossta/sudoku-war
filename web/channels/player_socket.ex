@@ -4,6 +4,7 @@ defmodule SudokuWar.PlayerSocket do
   ## Channels
   # channel "room:*", SudokuWar.RoomChannel
   channel "lobby", SudokuWar.LobbyChannel
+  channel "game:*", SudokuWar.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

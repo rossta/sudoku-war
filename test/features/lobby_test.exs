@@ -19,7 +19,6 @@ defmodule LobbyTest do
 
     click({:link_text, "Start new game"})
 
-    assert visible_page_text =~ "Instructions"
     assert visible_page_text =~ "Set up board"
   end
 end

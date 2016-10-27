@@ -16,10 +16,17 @@ class GameView extends React.Component {
     const { dispatch } = this.props
 
     return (
-      <div>
-        <h3>Instructions</h3>
-        <h3>Set up board</h3>
-      </div>
+      <section className="container">
+        <header>
+          <h2>Let's play</h2>
+        </header>
+        <section className="columns large-9 small-12">
+          <h3>Set up board</h3>
+        </section>
+        <section className="columns large-3 small-12">
+          <h3>Chat room</h3>
+        </section>
+      </section>
     )
   }
 }
