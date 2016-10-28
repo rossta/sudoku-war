@@ -19,18 +19,28 @@ defmodule SudokuWar.GameChannelTest do
     assert {:error, %{reason: "Game does not exist"}} = subscribe_and_join(socket, GameChannel, "game:invalid")
   end
 
-  test "leaving the game channel kills the game", %{game_id: game_id, game: game, socket: socket} do
+  test "stopping the game kills the game", %{game_id: game_id, game: game, socket: socket} do
     game_ref = Process.monitor(game)
 
     {:ok, _, socket} = subscribe_and_join(socket, GameChannel, "game:" <> game_id)
 
     Process.unlink(socket.channel_pid)
 
-    ref = leave(socket)
-    assert_reply ref, :ok
-
+    push socket, "game:stop", %{game_id: game_id}
     assert_receive {:DOWN, ^game_ref, :process, ^game, _}
 
     assert {:error, "Game does not exist"} = Game.join(game_id, @player_id, socket.channel_pid)
+  end
+
+  test "leaving the game channel braodcasts player left", %{game_id: game_id, socket: socket} do
+    {:ok, _, socket} = subscribe_and_join(socket, GameChannel, "game:" <> game_id)
+
+    Process.unlink(socket.channel_pid)
+
+    ref = leave(socket)
+    assert_reply ref, :ok
+    assert_broadcast "game:player_left", %{player_id: @player_id}
+
+    assert {:ok, _, _socket} = subscribe_and_join(socket, GameChannel, "game:" <> game_id)
   end
 end

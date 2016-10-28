@@ -1,5 +1,5 @@
 defmodule SudokuWar.PageControllerTest do
-  use SudokuWar.ConnCase
+  use SudokuWar.ConnCase, async: true
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

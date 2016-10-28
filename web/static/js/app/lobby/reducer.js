@@ -1,7 +1,10 @@
 import { socket } from '../session'
+import { Channel } from '../utils'
 
-const lobbyChannel = socket.channel('lobby')
+const lobbyChannel = new Channel(socket, 'lobby')
 lobbyChannel.join()
+.then(() => console.log('Joined lobby channel'))
+.catch(reason => console.error('Lobby join failed', reason))
 
 const initialState = {
   lobbyChannel,

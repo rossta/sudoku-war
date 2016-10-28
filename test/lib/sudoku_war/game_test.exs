@@ -18,10 +18,14 @@ defmodule SudokuWar.GameTest do
   test "joining a game", %{id: id, attacker_id: attacker_id, defender_id: defender_id} do
     {:ok, pid} = GameSupervisor.create_game(id)
 
+    another_player_id = SudokuWar.generate_player_id
+
+    assert {:ok, ^pid} = Game.join(id, attacker_id, self)
     assert {:ok, ^pid} = Game.join(id, attacker_id, self)
     assert {:ok, ^pid} = Game.join(id, attacker_id, self)
     assert {:ok, ^pid} = Game.join(id, defender_id, self)
-    assert {:error, "No more players allowed"} = Game.join(id, attacker_id, self)
+    assert {:ok, ^pid} = Game.join(id, defender_id, self)
+    assert {:error, "No more players allowed"} = Game.join(id, another_player_id, self)
 
     game = Game.get_data(id)
     assert ^attacker_id = game.attacker

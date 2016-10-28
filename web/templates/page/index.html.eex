@@ -1,6 +1,11 @@
+<div class="container">
 <div class="jumbotron">
   <h2><%= gettext "Welcome to %{name}", name: "Sudoku War" %></h2>
   <p class="lead">Where Sudoku is a two player game.</p>
+</div>
+
+<div class="row">
+  <a href="/play" class="button">Go to the War room</a>
 </div>
 
 <div class="row marketing">
@@ -33,4 +38,4 @@
       </li>
     </ul>
   </div>
-</div>
+<</div>/div>

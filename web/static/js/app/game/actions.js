@@ -39,7 +39,7 @@ function playerJoined(channel, playerId, gameId) {
       dispatch(setChannelAndGame(channel, payload.game))
     })
     .catch((reason) => {
-      console.error('Error with game:get_data', reason)
+      console.warn('Error with game:get_data', reason)
     })
 
     channel.push('game:joined')
@@ -49,6 +49,7 @@ function playerJoined(channel, playerId, gameId) {
 
 function playerJoinedError(payload) {
   return dispatch => {
+    console.warn("Could not join game", payload.reason)
     if (payload.reason === 'No more players allowed') {
       dispatch(push('/play/not_found'))
     }

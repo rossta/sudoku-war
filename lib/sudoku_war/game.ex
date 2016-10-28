@@ -52,10 +52,10 @@ defmodule SudokuWar.Game do
     Logger.debug "Handling :join for #{player_id} in Game #{game.id}"
 
     cond do
-      game.attacker != nil and game.defender != nil ->
-        {:reply, {:error, "No more players allowed"}, game}
       Enum.member?([game.attacker, game.defender], player_id) ->
         {:reply, {:ok, self}, game}
+      game.attacker != nil and game.defender != nil ->
+        {:reply, {:error, "No more players allowed"}, game}
       true ->
         Process.flag(:trap_exit, true)
         Process.monitor(pid)
@@ -99,6 +99,7 @@ defmodule SudokuWar.Game do
   defp ref(id), do: {:global, {:game, id}}
 
   defp try_call(id, message) do
+    Logger.info "try calling game id: #{id}, #{inspect message}"
     case whereis(id) do
       nil ->
         {:error, "Game does not exist"}

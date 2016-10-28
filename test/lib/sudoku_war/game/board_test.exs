@@ -7,10 +7,9 @@ defmodule SudokuWar.BoardTest do
   end
 
   test "create a board with map grid", %{game_id: game_id} do
-    {:ok, board_pid} = Board.create(game_id)
+    {:ok, _board_pid} = Board.create(game_id)
 
     board = Board.get_data(game_id)
-    IO.puts inspect board.grid
 
     keys = Map.keys(board.grid)
     assert 81 = length(keys)
