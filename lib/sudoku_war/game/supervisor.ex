@@ -1,7 +1,7 @@
 defmodule SudokuWar.Game.Supervisor do
   use Supervisor
 
-  alias Supervisor.{Game}
+  alias SudokuWar.{Game}
 
   def start_link, do: Supervisor.start_link(
     __MODULE__,
@@ -23,6 +23,10 @@ defmodule SudokuWar.Game.Supervisor do
     __MODULE__
     |> Supervisor.which_children
     |> Enum.map(&game_data/1)
+  end
+
+  def stop_game(pid) do
+    Supervisor.terminate_child(__MODULE__, pid)
   end
 
   defp game_data({_id, pid, _type, _modules}) do

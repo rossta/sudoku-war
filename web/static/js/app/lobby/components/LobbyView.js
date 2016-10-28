@@ -39,7 +39,7 @@ class LobbyView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {...state.lobby}
+  return { ...state.lobby }
 }
 
 export default connect(mapStateToProps)(LobbyView)

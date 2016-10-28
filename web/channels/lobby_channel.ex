@@ -17,10 +17,6 @@ defmodule SudokuWar.LobbyChannel do
     {:reply, {:ok, payload}, socket}
   end
 
-  def handle_in("current_games", _params, socket) do
-    {:reply, {:ok, %{games: GameSupervisor.current_games}}, socket}
-  end
-
   def handle_in("new_game", _params, socket) do
     game_id = SudokuWar.generate_game_id
     GameSupervisor.create_game(game_id)

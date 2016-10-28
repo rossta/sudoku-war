@@ -1,0 +1,26 @@
+.board {
+  width: 100vw;
+  height: 100vw;
+}
+.cell {
+  float: left;
+  display: block;
+  margin: 0;
+  width: 5vw;
+  height: 5vw;
+  border-top: 1px solid #CCC;
+  border-left: 1px solid #CCC;
+
+  @include media($mobile) {
+    width: 8vw;
+    height: 8vw;
+  }
+}
+
+.board .row .cell:last-child {
+  border-right: 1px solid #CCC;
+}
+
+.board .row:last-child .cell {
+  border-bottom: 1px solid #CCC;
+}

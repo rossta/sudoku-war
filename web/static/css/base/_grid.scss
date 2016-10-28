@@ -1,9 +1,15 @@
-.container { @include outer-container; }
+.container {
+  @include outer-container;
+}
 
-.row { @include row; }
+.row {
+  @include row();
+}
 
 .columns.large-9 { @include span-columns(9); }
+.columns.large-8 { @include span-columns(8); }
 .columns.large-6 { @include span-columns(6); }
+.columns.large-4 { @include span-columns(4); }
 .columns.large-3 { @include span-columns(3); }
 .columns.small-12 {
   @include media($mobile) {

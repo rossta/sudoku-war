@@ -13,12 +13,4 @@ defmodule LobbyTest do
 
     # display games
   end
-
-  test "start new game" do
-    navigate_to("/play")
-
-    click({:link_text, "Start new game"})
-
-    assert visible_page_text =~ "Set up board"
-  end
 end
