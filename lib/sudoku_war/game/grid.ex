@@ -84,23 +84,35 @@ defmodule SudokuWar.Game.Grid do
 
   def eliminate(grid, [], _digit), do: grid
   def eliminate(grid, [square|rest], digit) do
-    eliminate(grid, square, [digit]) |> eliminate(rest, digit)
+    case eliminate(grid, square, [digit]) do
+      {:contradiction, _msg} = contradiction ->
+        contradiction
+      new_grid ->
+        eliminate(new_grid, rest, digit)
+    end
   end
   def eliminate(grid, _square, []), do: grid
   def eliminate(grid, square, [digit | digits]) do
-    eliminate(grid, square, digit, grid[square]) |> eliminate(square, digits)
+    case eliminate(grid, square, digit, grid[square]) do
+      {:contradiction, _msg} = contradiction ->
+        contradiction
+      new_grid ->
+        eliminate(new_grid, square, digits)
+    end
   end
-  def eliminate(grid, square, digit, []), do: raise ArgumentError, message: "cannot eliminate empty digits"
+  def eliminate(_grid, square, _digit, []), do: raise ArgumentError, message: "encountered empty square " <> square
   def eliminate(grid, square, digit, digits)  do
     case digit in digits do
       true ->
         Map.update!(grid, square, fn(digits) -> List.delete(digits, digit) end)
         |> eliminate_peers(square)
+        # |> eliminate_units(square, digit)
       false ->
         grid
     end
   end
 
+  # If a square is reduced to one digit, then eliminate digit from the peers.
   defp eliminate_peers(grid, square), do: eliminate_peers(grid, square, grid[square])
   defp eliminate_peers(_grid, square, []), do: { :contradiction, "removed last value in square " <> square }
   defp eliminate_peers(grid, square, [digit]) do
