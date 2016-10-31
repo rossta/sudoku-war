@@ -100,7 +100,7 @@ defmodule SudokuWar.Game.GridTest do
     assert length(values) == 81
   end
 
-  test "assign all" do
+  test "assign all from whitespace text (easy)" do
     text = """
     2 0 8 7 0 9 3 0 5
     1 3 0 8 0 5 0 0 0
@@ -121,5 +121,39 @@ defmodule SudokuWar.Game.GridTest do
     assert grid["33"] == [1]
     assert grid["78"] == [1]
     assert grid["87"] == [5]
+  end
+
+  test "assign all from stripped text (easy)" do
+    text = "003020600900305001001806400008102900700000008006708200002609500800203009005010300"
+
+    grid = Grid.parse_grid(text) |> Grid.assign_all
+
+    assert grid["00"] == [4]
+    assert grid["10"] == [9]
+    assert grid["01"] == [8]
+  end
+
+  test "assign all from stripped text (hard)" do
+    text = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
+
+    grid = Grid.parse_grid(text) |> Grid.assign_all
+
+    assert grid["00"] == [4]
+    assert grid["10"] == [2,6,7,8,9]
+    assert grid["01"] == [1,6,7,9]
+  end
+
+  test "search from stripped text (hard)" do
+    text = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
+
+    grid = Grid.parse_grid(text) |> Grid.assign_all |> Grid.search
+
+    IO.puts ""
+    Grid.puts(grid)
+    IO.puts ""
+
+    assert grid["00"] == [4]
+    assert grid["10"] == [8]
+    assert grid["01"] == [1]
   end
 end
