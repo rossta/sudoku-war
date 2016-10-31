@@ -6,9 +6,6 @@ import { Provider }             from 'react-redux'
 
 import { Router, configureStore } from './base'
 
-import es6Promise from 'es6-promise'
-es6Promise.polyfill()
-
 const store  = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 

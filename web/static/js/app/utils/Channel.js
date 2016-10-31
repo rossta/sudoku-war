@@ -1,3 +1,5 @@
+import { Promise } from 'es6-promise'
+
 function Channel(socket, route) {
   this.channel = socket.channel(route)
 }
