@@ -1,6 +1,6 @@
 defmodule SudokuWar.Game.Board do
   require Logger
-  alias SudokuWar.Game.GridX
+  alias SudokuWar.Game.Grid
 
   @size 9
 
@@ -8,7 +8,7 @@ defmodule SudokuWar.Game.Board do
 
   defstruct [
     game_id: nil,
-    grid: GridX.new,
+    grid: Grid.new,
     ready: false,
   ]
 

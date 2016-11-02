@@ -29,7 +29,7 @@ defmodule SudokuWar.Game.Grid do
   @doc """
   Convert grid into a Map of {square: char} with '0' or '.' for empties.
   """
-  defp grid_values(grid) do
+  def grid_values(grid) do
     digits = for d <- grid, d in @digits or d in '0.', do: d
     unless length(digits) == @size*@size, do: raise("Expected number of grid cells is #{@size*@size}")
     Enum.zip(squares, digits) |> Enum.into(%{})

@@ -3,7 +3,6 @@ defmodule SudokuWar.Game.Solver do
   Solves 9x9 Sudoku puzzles, Peter Norvig style.
   http://norvig.com/sudoku.html
   """
-  alias __MODULE__
   alias SudokuWar.Game.Grid
 
   @doc """
@@ -82,16 +81,6 @@ defmodule SudokuWar.Game.Solver do
   end
 
   @doc """
-  Propagate a reducing function to other squares until a contradiction is reached
-  """
-  defp propagate(_values, false, _fun), do: false
-  defp propagate(_values, :contradiction, fun), do: false
-  defp propagate([], acc, fun), do: acc
-  defp propagate([first | rest], acc, fun) do
-    propagate rest, fun.(first, acc), fun
-  end
-
-  @doc """
   Given a puzzle char list, find the solution and return as a char list.
   Use display/1 to print the grid as a square.
   """
@@ -118,12 +107,14 @@ defmodule SudokuWar.Game.Solver do
   defp search_complete?(values) do
     Enum.all?(values, fn {_sq, ds} -> length(ds) == 1 end)
   end
+
   # Choose the unfilled square s with the fewest possibilities
   defp square_to_search(values) do
     unsolved_grid = for {sq, ds} <- values, length(ds) > 1, do: {sq, ds}
     {square, _digits} = Enum.min_by(unsolved_grid, fn {_sq, ds} -> length(ds) end)
     square
   end
+
   defp search_square(square, values, grid) do
     Enum.find_value Map.get(values, square), fn d ->
       assign(values, square, d, grid) |> search(grid)
@@ -135,4 +126,12 @@ defmodule SudokuWar.Game.Solver do
       if v2 in '.0', do: v1, else: [v2]
     end)
   end
+
+  defp propagate(_values, false, _fun), do: false
+  defp propagate(_values, :contradiction, _fun), do: false
+  defp propagate([], acc, _fun), do: acc
+  defp propagate([first | rest], acc, fun) do
+    propagate rest, fun.(first, acc), fun
+  end
+
 end

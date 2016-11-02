@@ -92,28 +92,4 @@ defmodule SudokuWar.Game.GridTest do
     values = Map.values(values)
     assert length(values) == 81
   end
-
-  @tag :skip
-  test "assign all from whitespace text (easy)" do
-    text = """
-    2 0 8 7 0 9 3 0 5
-    1 3 0 8 0 5 0 0 0
-    0 0 9 0 6 4 0 0 2
-    3 0 7 0 0 2 5 0 0
-    0 0 0 0 5 0 7 1 0
-    5 8 0 4 0 6 0 3 0
-    8 0 5 0 4 1 9 0 3
-    0 0 0 0 0 0 4 2 0
-    4 1 3 0 9 0 0 0 6
-    """
-
-    grid = Grid.parse_grid(text) |> Grid.assign_all
-
-    assert grid["00"] == [2]
-    assert grid["10"] == [1]
-    assert grid["01"] == [6]
-    assert grid["33"] == [1]
-    assert grid["78"] == [1]
-    assert grid["87"] == [5]
-  end
 end
