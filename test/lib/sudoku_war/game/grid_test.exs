@@ -8,22 +8,15 @@ defmodule SudokuWar.Game.GridTest do
 
   test "create a empty board" do
     grid = Grid.new
-    assert Enum.all? Map.values(grid), &Enum.empty?/1
-  end
-
-  test "create a board with default digists" do
-    grid = Grid.new([1,2,3,4,5,6,7,8,9])
-    assert Enum.all? Map.values(grid), &(&1 == [1,2,3,4,5,6,7,8,9])
+    assert Enum.all? Map.values(grid.values), &Enum.empty?/1
   end
 
   test "squares" do
     squares = Grid.squares
     assert length(squares) == 81
-    assert Enum.member?(squares, "00")
-    assert Enum.member?(squares, "01")
-    assert Enum.member?(squares, "02")
-
-    # assert all(len(peers[s]) == 20 for s in squares)]
+    assert Enum.member?(squares, 'A1')
+    assert Enum.member?(squares, 'A2')
+    assert Enum.member?(squares, 'B3')
   end
 
   test "unit_list" do
@@ -33,10 +26,10 @@ defmodule SudokuWar.Game.GridTest do
 
   test "units" do
     units = Grid.units
-    assert units["22"] == [
-     ["02", "12", "22", "32", "42", "52", "62", "72", "82"],
-     ["20", "21", "22", "23", "24", "25", "26", "27", "28"],
-     ["00", "01", "02", "10", "11", "12", "20", "21", "22"]
+    assert units['C3'] == [
+     ['A3', 'B3', 'C3', 'D3', 'E3', 'F3', 'G3', 'H3', 'I3'],
+     ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'],
+     ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']
    ]
 
    assert Enum.all?(Map.values(units), fn(u) -> length(u) == 3 end)
@@ -44,9 +37,7 @@ defmodule SudokuWar.Game.GridTest do
 
   test "peers" do
     peers = Grid.peers
-    assert peers["21"] == MapSet.new(["01", "11", "31", "41", "51", "61", "71", "81",
-     "20", "22", "23", "24", "25", "26", "27", "28",
-     "00", "02", "10", "12"])
+    assert peers['A2'] == MapSet.new(['A1', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3', 'D2', 'E2', 'F2', 'G2', 'H2', 'I2'])
   end
 
   test "parse full grid" do
@@ -62,17 +53,18 @@ defmodule SudokuWar.Game.GridTest do
     4 1 3 2 9 7 8 5 6
     """
 
-    grid = Grid.parse_grid(text)
-    assert grid["00"] == [2]
-    assert grid["10"] == [1]
-    assert grid["01"] == [6]
-    assert grid["33"] == [1]
-    assert grid["78"] == [1]
-    assert grid["87"] == [5]
+    grid = Grid.new(text)
+    values = grid.values
+    assert [values['A1']] == '2'
+    assert [values['B1']] == '1'
+    assert [values['A2']] == '6'
+    assert [values['D4']] == '1'
+    assert [values['G9']] == '3'
+    assert [values['I8']] == '5'
 
-    values = Map.values(grid)
+    values = Map.values(values)
     assert length(values) == 81
-    assert Enum.all?(values, fn([v]) -> Enum.member?(1..9, v) end)
+    assert Enum.all?(values, fn(v) -> Enum.member?('123456789', v) end)
   end
 
   test "parse partial grid" do
@@ -88,18 +80,20 @@ defmodule SudokuWar.Game.GridTest do
     4 1 3 0 9 0 8 5 6
     """
 
-    grid = Grid.parse_grid(text)
-    assert grid["00"] == [2]
-    assert grid["10"] == [1]
-    assert grid["01"] == []
-    assert grid["33"] == []
-    assert grid["78"] == []
-    assert grid["87"] == [5]
+    grid = Grid.new(text)
+    values = grid.values
+    assert [values['A1']] == '2'
+    assert [values['B1']] == '1'
+    assert [values['A2']] == '0'
+    assert [values['D4']] == '0'
+    assert [values['G9']] == '3'
+    assert [values['I8']] == '5'
 
-    values = Map.values(grid)
+    values = Map.values(values)
     assert length(values) == 81
   end
 
+  @tag :skip
   test "assign all from whitespace text (easy)" do
     text = """
     2 0 8 7 0 9 3 0 5
@@ -121,39 +115,5 @@ defmodule SudokuWar.Game.GridTest do
     assert grid["33"] == [1]
     assert grid["78"] == [1]
     assert grid["87"] == [5]
-  end
-
-  test "assign all from stripped text (easy)" do
-    text = "003020600900305001001806400008102900700000008006708200002609500800203009005010300"
-
-    grid = Grid.parse_grid(text) |> Grid.assign_all
-
-    assert grid["00"] == [4]
-    assert grid["10"] == [9]
-    assert grid["01"] == [8]
-  end
-
-  test "assign all from stripped text (hard)" do
-    text = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
-
-    grid = Grid.parse_grid(text) |> Grid.assign_all
-
-    assert grid["00"] == [4]
-    assert grid["10"] == [2,6,7,8,9]
-    assert grid["01"] == [1,6,7,9]
-  end
-
-  test "search from stripped text (hard)" do
-    text = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
-
-    grid = Grid.parse_grid(text) |> Grid.assign_all |> Grid.search
-
-    IO.puts ""
-    Grid.puts(grid)
-    IO.puts ""
-
-    assert grid["00"] == [4]
-    assert grid["10"] == [8]
-    assert grid["01"] == [1]
   end
 end

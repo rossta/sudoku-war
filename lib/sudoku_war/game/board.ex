@@ -1,11 +1,14 @@
 defmodule SudokuWar.Game.Board do
   require Logger
+  alias SudokuWar.Game.GridX
 
   @size 9
 
+  @type t :: %__MODULE__{ game_id: String.t, grid: Grid.t, ready: boolean }
+
   defstruct [
     game_id: nil,
-    grid: %{},
+    grid: GridX.new,
     ready: false,
   ]
 
