@@ -5,21 +5,38 @@
   float: left;
   display: block;
   margin: 0;
-  width: 5vw;
-  height: 5vw;
-  border-top: 1px solid #CCC;
-  border-left: 1px solid #CCC;
+  width: 3.5vw;
+  height: 3.5vw;
+  border-collapse: collapse;
+  border-color: $base-border-color;
+  border-style: solid;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-right-width: 0;
+  border-bottom-width: 0px;
+  background-color: $secondary-background-color;
 
   @include media($mobile) {
     width: 8vw;
     height: 8vw;
   }
 }
-
-.board .row .cell:last-child {
-  border-right: 1px solid #CCC;
+.cell:nth-child(1) {
+  border-left-width: 2px;
 }
 
-.board .row:last-child .cell {
-  border-bottom: 1px solid #CCC;
+.cell:nth-child(3),
+.cell:nth-child(6),
+.cell:nth-child(9) {
+  border-right-width: 2px;
+}
+
+.board .row:nth-child(1) .cell {
+  border-top-width: 2px;
+}
+
+.board .row:nth-child(3) .cell,
+.board .row:nth-child(6) .cell,
+.board .row:nth-child(9) .cell {
+  border-bottom-width: 2px;
 }

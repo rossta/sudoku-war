@@ -25,19 +25,20 @@ class GameView extends React.Component {
 
     return (
       <section className="container">
-        <header>
-          <h2>Let's play</h2>
-        </header>
         <section className="row">
-          <section className="columns large-8 small-12 board-container">
-            <h3>Set up board</h3>
-
-            <p>Introduction</p>
-
+          <section className="columns large-6 small-12 board-container">
+            <h2>Sudoku War</h2>
             <Board {...{dispatch, gameChannel, data}}/>
           </section>
-          <section className="columns large-4 small-12">
-            <h3>Chat room</h3>
+          <section className="columns large-6 small-12">
+            <header>
+              <h2>Let's play</h2>
+            </header>
+            <h3>Set up board</h3>
+            <p>Introduction</p>
+            <section>
+              <h3>Chat room</h3>
+            </section>
           </section>
         </section>
         <section className="row">

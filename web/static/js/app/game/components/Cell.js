@@ -1,41 +1,42 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import { cellKey } from '../../utils'
 
 export default class Cell extends React.Component {
-  handleClick(x, y, value) {
+  handleClick(row, col, value) {
     return e => {
-      return console.log('cell click', x, y, value, e)
+      return console.log('cell click', row, col, value, e)
     }
   }
 
-  handleMouseOver(x, y) {
-    return this.toggleClasses(x, y)
+  handleMouseOver(row, col) {
+    return this.toggleClasses(row, col)
   }
 
-  handleMouseOut(x, y) {
-    return this.toggleClasses(x, y)
+  handleMouseOut(row, col) {
+    return this.toggleClasses(row, col)
   }
 
-  toggleClasses(x, y) {
+  toggleClasses(row, col) {
     return e => {
       e.preventDefault()
     }
   }
 
   render() {
-    const { x, y, value } = this.props
-    const id = cellKey(x, y)
-    const classes = "cell"
+    const { col, row, value } = this.props
+    const id = cellKey(col, row)
+    const classes = classnames("cell", `col-${col}`, `row-${row}`)
 
     return (
       <div
         id={id}
         className={classes}
-        onClick={::this.handleClick(x, y, value)}
+        onClick={::this.handleClick(row, col, value)}
         onDoubleClick={(e) => e.preventDefault()}
-        onMouseOver={::this.handleMouseOver(x, y)}
-        onMouseOut={::this.handleMouseOut(x, y)}>{value}</div>
+        onMouseOver={::this.handleMouseOver(row, col)}
+        onMouseOut={::this.handleMouseOut(row, col)}>{value}</div>
     );
   }
 }

@@ -8,38 +8,24 @@ export default class Board extends React.Component {
   renderRows(data) {
     const { grid } = data
 
-    // const rows = [this.buildRowHeader()]
     const rows = []
-    let cells, value, key;
+    let cells, value, key, rowClasses;
 
-    for (let y = 0; y < 10; y++) {
-      // cells = [<div key={`header-${y}`} className="header cell">{y + 1}</div>]
+    for (let row = 1; row <= 9; row++) {
       cells = []
 
-      for (let x = 0; x < 10; x++) {
-        key = cellKey(x, y)
+      for (let col = 1; col <= 9; col++) {
+        key = cellKey(row, col)
         value = grid[key]
-        cells.push(<Cell {...{ key, x, y, value }} />)
+        cells.push(<Cell {...{ key, row, col, value }} />)
       }
 
-      rows.push(<div className="row" key={y}>{cells}</div>)
+      rowClasses = classnames('row', `row-${row}`)
+
+      rows.push(<div className={rowClasses} key={row}>{cells}</div>)
     }
 
     return rows
-  }
-
-  buildRowHeader() {
-    const values = [<div key="empty" className="header cell"></div>]
-
-    for (let i = 0; i < 10; ++i) {
-      values.push(<div key={i} className="header cell">{String.fromCharCode(i+65)}</div>)
-    }
-
-    return (
-      <div key="col-headers" className="row">
-        {values}
-      </div>
-    )
   }
 
   render() {
