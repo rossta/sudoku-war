@@ -7,8 +7,8 @@ defmodule SudokuWar.Game.GridTest do
   end
 
   test "create a empty board" do
-    grid = Grid.new
-    assert Enum.all? Map.values(grid.values), &Enum.empty?/1
+    values = Grid.new
+    assert Enum.all? Map.values(values), &Enum.empty?/1
   end
 
   test "squares" do
@@ -53,8 +53,7 @@ defmodule SudokuWar.Game.GridTest do
     4 1 3 2 9 7 8 5 6
     """
 
-    grid = Grid.new(text)
-    values = grid.values
+    values = Grid.new(text)
     assert [values['A1']] == '2'
     assert [values['B1']] == '1'
     assert [values['A2']] == '6'
@@ -80,8 +79,7 @@ defmodule SudokuWar.Game.GridTest do
     4 1 3 0 9 0 8 5 6
     """
 
-    grid = Grid.new(text)
-    values = grid.values
+    values = Grid.new(text)
     assert [values['A1']] == '2'
     assert [values['B1']] == '1'
     assert [values['A2']] == '0'

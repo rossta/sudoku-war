@@ -6,19 +6,15 @@ defmodule SudokuWar.Game.Grid do
   @cols '123456789'
   @digits '123456789'
 
-  @type t :: %Grid{ values: map, squares: list, units: map, peers: map }
-  # used to cache all squares, units, and peer relationships
-  defstruct values: nil, squares: nil, units: nil, peers: nil
-
   @doc """
   Convert grid into a Map of {square: char} with '0' or '.' for empties.
   """
-  @spec new(nil | list) :: Grid.t()
+  @spec new(nil | list | String.t()) :: map
   def new do
-    %Grid{squares: squares, units: units, peers: peers, values: all_values([]) }
+    all_values([])
   end
   def new([_|_] = chars) when length(chars) == @size*@size do
-    %{new | values: grid_values(chars)}
+    grid_values(chars)
   end
   def new(text) when is_binary(text) do
     Regex.replace(~r/\s+/, text, "")
