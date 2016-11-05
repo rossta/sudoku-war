@@ -22,6 +22,19 @@ defmodule SudokuWar.Game.Grid do
     |> new
   end
 
+  def stringify(values) do
+    values
+    |> Map.to_list
+    |> Enum.into(%{}, fn {k, v} ->
+      { stringify_key(k), stringify_value(v) }
+    end)
+  end
+
+  defp stringify_key(key), do: to_string(key)
+  defp stringify_value(value) when value in '.0', do: "0"
+  defp stringify_value(value) when is_integer(value), do: stringify_value([value])
+  defp stringify_value(value), do: to_string(value)
+
   @doc """
   Convert grid into a Map of {square: char} with '0' or '.' for empties.
   """

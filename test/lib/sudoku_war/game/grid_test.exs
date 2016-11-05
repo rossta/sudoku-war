@@ -90,4 +90,29 @@ defmodule SudokuWar.Game.GridTest do
     values = Map.values(values)
     assert length(values) == 81
   end
+
+  test "convert to string keys and values" do
+    text = """
+    2 0 8 7 0 9 3 0 5
+    1 3 0 8 0 5 0 0 0
+    0 0 9 0 6 4 0 0 2
+    3 0 7 0 0 2 5 0 0
+    0 0 0 0 5 0 7 1 8
+    5 8 0 4 0 6 0 3 0
+    8 0 5 0 4 1 9 0 3
+    0 0 0 0 0 0 4 2 0
+    4 1 3 0 9 0 8 5 6
+    """
+
+    values = Grid.new(text) |> Grid.stringify
+    assert values["A1"] == "2"
+    assert values["B1"] == "1"
+    assert values["A2"] == "0"
+    assert values["D4"] == "0"
+    assert values["G9"] == "3"
+    assert values["I8"] == "5"
+
+    values = Map.values(values)
+    assert length(values) == 81
+  end
 end
