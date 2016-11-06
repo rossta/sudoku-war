@@ -17,7 +17,7 @@ class GameView extends React.Component {
   }
 
   render() {
-    const { dispatch, game, gameOver, gameChannel, playerId, currentTurn } = this.props;
+    const { dispatch, game, gameOver, gameChannel, playerId, currentTurn, selectedCell } = this.props;
 
     if (!game) return false
 
@@ -27,8 +27,8 @@ class GameView extends React.Component {
       <section className="container">
         <section className="row">
           <section className="columns large-6 small-12 board-container">
-            <h2>Sudoku War</h2>
-            <Board {...{dispatch, gameChannel, data}}/>
+            <h2>Game</h2>
+            <Board {...{dispatch, gameChannel, selectedCell, data}}/>
           </section>
           <section className="columns large-6 small-12">
             <header>
@@ -36,15 +36,13 @@ class GameView extends React.Component {
             </header>
             <h3>Set up board</h3>
             <p>Introduction</p>
-            <section>
+            <section className="row">
               <h3>Chat room</h3>
             </section>
+            <section className="row">
+              <Link className="button" to="/play">Exit game</Link>
+            </section>
           </section>
-        </section>
-        <section className="row">
-          <Link className="button" to="/play">
-            Exit game
-          </Link>
         </section>
       </section>
     )

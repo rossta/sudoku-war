@@ -26,15 +26,15 @@ $medium-gray: #999;
 $light-gray: #ddd;
 
 // Font Colors
-$base-font-color: $rgba-primary-4;
-$action-color: $rgba-primary-4;
+$base-font-color: $rgba-primary-1;
+$action-color: $rgba-primary-3;
 
 // Border
-$base-border-color: $rgba-primary-3;
+$base-border-color: $rgba-primary-2;
 $base-border: 1px solid $base-border-color;
 
 // Background Colors
-$base-background-color: $rgba-primary-1;
+$base-background-color: rgba(0, 0, 0, 0.95);
 $secondary-background-color: tint($base-border-color, 75%);
 
 // Forms

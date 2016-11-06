@@ -35,6 +35,15 @@ defmodule SudokuWar.GameChannel do
     {:reply, {:ok, %{game: game}}, socket}
   end
 
+  def handle_in("game:enter_value", %{"col" => col, "row" => row, "value" => value}, socket) do
+    player_id = socket.assigns.player_id
+    game_id = socket.assigns.game_id
+
+    game = Game.enter_value(game_id, {row, col, value})
+
+    {:reply, {:ok, %{game: game}}, socket}
+  end
+
   def handle_in("game:stop", _message, socket) do
     game_id = socket.assigns.game_id
 
@@ -44,7 +53,7 @@ defmodule SudokuWar.GameChannel do
   end
 
   def terminate(reason, socket) do
-    Logger.debug"Terminating GameChannel #{socket.assigns.game_id} #{inspect reason}"
+    Logger.debug "Terminating GameChannel #{socket.assigns.game_id} #{inspect reason}"
 
     player_id = socket.assigns.player_id
     game_id = socket.assigns.game_id

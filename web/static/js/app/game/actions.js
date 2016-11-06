@@ -63,7 +63,7 @@ function setChannelAndGame(channel, game) {
   return dispatch => {
     dispatch({
       type: Constants.GAME_SET_CHANNEL,
-      channel: channel,
+      channel,
     });
 
     dispatch(setGame(game));
@@ -73,6 +73,27 @@ function setChannelAndGame(channel, game) {
 export function setGame(game) {
   return {
     type: Constants.GAME_SET_GAME,
-    game: game,
+    game,
   };
+}
+
+export function selectCell(row, col) {
+  return {
+    type: Constants.GAME_SELECT_CELL,
+    row,
+    col
+  }
+}
+
+export function enterValue(channel, row, col, value) {
+  return dispatch => {
+    channel.push('game:enter_value', {
+      row,
+      col,
+      value
+    })
+    .then((payload) => {
+      console.log("Successfully entered value!", row, col, value)
+    })
+  }
 }

@@ -1,12 +1,25 @@
+$cell-width-large: 3.5vw;
+$cell-width-mobile: 10vw;
+
+@mixin cellStyle {
+
+}
+
 .board-container {
   margin-bottom: 1em;
 }
+
 .cell {
   float: left;
   display: block;
   margin: 0;
-  width: 3.5vw;
-  height: 3.5vw;
+  width: $cell-width-large;
+  height: $cell-width-large;
+  line-height: $cell-width-large;
+  text-align: center;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.75em;
+  color: #eaff00;
   border-collapse: collapse;
   border-color: $base-border-color;
   border-style: solid;
@@ -14,21 +27,42 @@
   border-left-width: 1px;
   border-right-width: 0;
   border-bottom-width: 0px;
-  background-color: $secondary-background-color;
+
+  input {
+    color: white;
+    line-height: $cell-width-large;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    text-align: center;
+
+    &:focus {
+      background-color: blue;
+    }
+  }
+
+  &:nth-child(1) {
+    border-left-width: 2px;
+  }
+
+  &:nth-child(3),
+  &:nth-child(6),
+  &:nth-child(9) {
+    border-right-width: 2px;
+  }
 
   @include media($mobile) {
-    width: 8vw;
-    height: 8vw;
-  }
-}
-.cell:nth-child(1) {
-  border-left-width: 2px;
-}
+    width: $cell-width-mobile;
+    height: $cell-width-mobile;
+    line-height: $cell-width-mobile;
 
-.cell:nth-child(3),
-.cell:nth-child(6),
-.cell:nth-child(9) {
-  border-right-width: 2px;
+    input {
+      color: white;
+      line-height: $cell-width-mobile;
+    }
+  }
 }
 
 .board .row:nth-child(1) .cell {

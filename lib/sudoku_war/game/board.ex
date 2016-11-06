@@ -4,12 +4,10 @@ defmodule SudokuWar.Game.Board do
 
   @size 9
 
-  @type t :: %__MODULE__{ game_id: String.t, grid: Grid.t, ready: boolean }
+  @type t :: %__MODULE__{ grid: Grid.t }
 
   defstruct [
-    game_id: nil,
-    grid: Grid.new,
-    ready: false,
+    grid: nil,
   ]
 
   @doc """
@@ -30,7 +28,7 @@ defmodule SudokuWar.Game.Board do
   Creates a new board for a Game
   """
   def create(game_id) do
-    Agent.start(fn -> %__MODULE__{game_id: game_id, grid: build_grid} end, name: ref(game_id))
+    Agent.start(fn -> %__MODULE__{grid: build_grid} end, name: ref(game_id))
   end
 
   @doc """
@@ -40,12 +38,17 @@ defmodule SudokuWar.Game.Board do
     Agent.get(ref(game_id), &(&1))
   end
 
+  def enter_value(game_id, {row, col, value}) do
+    {_, board_data} = Map.get_and_update(get_data(game_id), :grid, fn current_grid ->
+      { current_grid, Map.put(current_grid, "#{row}#{col}", value) }
+    end)
+
+    board_data
+  end
+
   # Builds a default grid map
   defp build_grid do
-    for x <- 0..@size - 1,
-        y <- 0..@size - 1,
-        into: Map.new,
-        do: {"#{x}#{y}", nil}
+    Grid.parse_grid('4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......')
   end
 
   # Generates global reference name for the board process

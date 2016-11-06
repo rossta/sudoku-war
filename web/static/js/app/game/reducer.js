@@ -9,6 +9,7 @@ const initialState = {
   winnerId: null,
   currentTurn: null,
   error: null,
+  selectedCell: [],
 }
 
 function readyForWar(game) {
@@ -17,7 +18,7 @@ function readyForWar(game) {
 }
 
 function currentTurn(game) {
-  if (!readyForWar(game)) return null;
+  if (!readyForWar(game)) return null
 
   const lastTurn = game.turns[0]
 
@@ -58,6 +59,11 @@ export default function reducer(state = initialState, action = {}) {
       }
 
       return { ...state, game }
+
+    case Constants.GAME_SELECT_CELL:
+      const { row, col } = action
+
+      return { ...state, selectedCell: [ row, col ] }
 
     default:
       return state

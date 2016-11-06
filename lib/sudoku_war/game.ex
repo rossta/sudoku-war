@@ -12,7 +12,7 @@ defmodule SudokuWar.Game do
     turns: [],
     over: false,
     winner: nil,
-    board: nil,
+    grid: nil,
   ]
 
   def start_link(id) do
@@ -28,6 +28,8 @@ defmodule SudokuWar.Game do
   Returns the game's state
   """
   def get_data(id), do: try_call(id, :get_data)
+
+  def enter_value(id, data), do: try_call(id, {:enter_value, data})
 
   def stop(id) do
     whereis(id) |> GameSupervisor.stop_game()
@@ -77,6 +79,16 @@ defmodule SudokuWar.Game do
     {:reply, game_data, game}
   end
 
+  def handle_call({:enter_value, {row, col, value}}, _from, game) do
+    Logger.debug "Handling :enter_value for Game #{game.id}: {#{row}, #{col}, #{value}}"
+
+    board_data = Board.enter_value(game.id, {row, col, value})
+
+    game_data = Map.put(game, :board, board_data)
+
+    {:reply, game_data, game}
+  end
+
   def handle_call({:player_left, player_id}, _from, game) do
     Logger.debug "Handling :player_left for #{player_id} in Game #{game.id}"
 
@@ -99,7 +111,6 @@ defmodule SudokuWar.Game do
   defp ref(id), do: {:global, {:game, id}}
 
   defp try_call(id, message) do
-    Logger.info "try calling game id: #{id}, #{inspect message}"
     case whereis(id) do
       nil ->
         {:error, "Game does not exist"}

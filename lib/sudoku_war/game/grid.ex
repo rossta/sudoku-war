@@ -110,7 +110,7 @@ defmodule SudokuWar.Game.Grid do
   Parse grid values from text
   """
   def parse_grid(text) do
-    new(text)
+    new(text) |> stringify
   end
 
   @doc """
