@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { setGame, selectCell, enterValue } from '../actions'
 
-import { cellKey } from '../../utils'
+import { cellKey, rowLetter } from '../../utils'
 import { Cell } from '../components'
 
 export default class Board extends React.Component {
@@ -12,9 +12,9 @@ export default class Board extends React.Component {
 
     const rows = []
     const onSelectCell = (row, col) => dispatch(selectCell(row, value))
-    const onEnterValue = (row, col, value) => dispatch(enterValue(gameChannel, row, col, value))
+    const onEnterValue = (key, value) => dispatch(enterValue(gameChannel, key, value))
 
-    let cells, value, key, rowClasses, hsb, color;
+    let coord, cells, value, key, rowClasses, hsb, color, classes;
 
     hsb = 0
 
@@ -23,16 +23,20 @@ export default class Board extends React.Component {
 
       for (let col = 1; col <= 9; col++) {
         key = cellKey(row, col)
+        coord = key
         value = grid[key]
         hsb += 0.01
         color = "hsb(" + hsb + ", 1, 1)"
+        classes = classnames("cell", `col-${col}`, `row-${rowLetter(row)}`)
 
         const cellProps = {
           key,
+          coord,
           row,
           col,
           value,
           color,
+          classes,
           selectedCell,
           onSelectCell,
           onEnterValue,
@@ -41,7 +45,7 @@ export default class Board extends React.Component {
         cells.push(<Cell {...cellProps} />)
       }
 
-      rowClasses = classnames('row', `row-${row}`)
+      rowClasses = classnames('row', `row-${rowLetter(row)}`)
 
       rows.push(<div className={rowClasses} key={row}>{cells}</div>)
     }

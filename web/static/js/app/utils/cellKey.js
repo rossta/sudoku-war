@@ -1,14 +1,22 @@
 const rows = "ABCDEFGHI".split("")
 const cols = "123456789".split("")
 
-export default function(rowNumber, colNumber) {
-  const rowIndex = rowNumber - 1
-  const colIndex = colNumber - 1
-  if (rowIndex < 0 || rows.length <= rowIndex) {
-    console.warn("Row index out of bounds", rowIndex);
+export function cellKey(rowNumber, colNumber) {
+  assertInBounds(colNumber)
+
+  return rowLetter(rowNumber) + colNumber
+}
+
+export function rowLetter(rowNumber) {
+  assertInBounds(rowNumber)
+
+  return rows[rowNumber - 1]
+}
+
+function assertInBounds(type, number) {
+  if (number < 1 || number > 9) {
+    console.warn(`${type} index out of bounds`, number);
   }
-  if (colIndex < 0 || cols.length <= colIndex) {
-    console.warn("Col index out of bounds", colIndex);
-  }
-  return rows[rowIndex] + cols[colIndex]
+
+  return number
 }

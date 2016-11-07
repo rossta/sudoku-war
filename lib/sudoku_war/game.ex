@@ -79,10 +79,10 @@ defmodule SudokuWar.Game do
     {:reply, game_data, game}
   end
 
-  def handle_call({:enter_value, {row, col, value}}, _from, game) do
-    Logger.debug "Handling :enter_value for Game #{game.id}: {#{row}, #{col}, #{value}}"
+  def handle_call({:enter_value, {key, value}}, _from, game) do
+    Logger.debug "Handling :enter_value for Game #{game.id}: {#{key}, #{value}}"
 
-    board_data = Board.enter_value(game.id, {row, col, value})
+    board_data = Board.enter_value(game.id, {key, value})
 
     game_data = Map.put(game, :board, board_data)
 

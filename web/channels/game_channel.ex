@@ -35,11 +35,16 @@ defmodule SudokuWar.GameChannel do
     {:reply, {:ok, %{game: game}}, socket}
   end
 
-  def handle_in("game:enter_value", %{"col" => col, "row" => row, "value" => value}, socket) do
+  def handle_in("game:enter_value", %{"key" => key, "value" => value}, socket) do
     player_id = socket.assigns.player_id
     game_id = socket.assigns.game_id
 
-    game = Game.enter_value(game_id, {row, col, value})
+    game = Game.enter_value(game_id, {key, value})
+    board = Map.get(game, :board)
+
+    Logger.debug "Responding with board after adding #{key}:#{value}"
+
+    broadcast! socket, "game:board_updated", %{board: board}
 
     {:reply, {:ok, %{game: game}}, socket}
   end

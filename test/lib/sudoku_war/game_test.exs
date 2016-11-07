@@ -33,4 +33,24 @@ defmodule SudokuWar.GameTest do
 
     assert %Board{game_id: ^id} = Agent.get({:global, {:board, id}}, &(&1))
   end
+
+  test "entering a grid value", %{id: id, attacker_id: attacker_id} do
+    {:ok, pid} = GameSupervisor.create_game(id)
+    assert {:ok, ^pid} = Game.join(id, attacker_id, self)
+
+    game = Game.get_data(id)
+    board = game.board
+
+    assert board.grid["A1"] == "4"
+    assert board.grid["A2"] == "0"
+
+    Game.enter_value(id, {"A1", "6"})
+    Game.enter_value(id, {"A2", "4"})
+
+    game = Game.get_data(id)
+    board = game.board
+
+    assert board.grid["A1"] == "6"
+    assert board.grid["A2"] == "4"
+  end
 end

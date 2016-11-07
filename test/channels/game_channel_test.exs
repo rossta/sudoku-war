@@ -43,4 +43,22 @@ defmodule SudokuWar.GameChannelTest do
 
     assert {:ok, _, _socket} = subscribe_and_join(socket, GameChannel, "game:" <> game_id)
   end
+
+  test "entering value on game grid", %{game_id: game_id, socket: socket} do
+    {:ok, _, socket} = subscribe_and_join(socket, GameChannel, "game:" <> game_id)
+
+    push socket, "game:enter_value", %{key: "A2", value: "4"}
+    assert_broadcast "game:board_updated", %{board: _}
+
+    game = Game.get_data(game_id)
+    board = game.board
+    assert board.grid["A2"] == "4"
+
+    push socket, "game:enter_value", %{key: "I9", value: "6"}
+    assert_broadcast "game:board_updated", %{board: _}
+
+    game = Game.get_data(game_id)
+    board = game.board
+    assert board.grid["I9"] == "6"
+  end
 end

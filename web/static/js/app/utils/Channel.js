@@ -16,11 +16,8 @@ Channel.prototype.join = function(resolve, reject) {
 
 Channel.prototype.on = function(event, resolve, reject) {
   const channel = this.channel
-
-  return new Promise((resolve, reject) => {
-    channel.on(event, resolve)
-    channel.onError(reject)
-  })
+  channel.on(event, resolve)
+  channel.onError(reject)
 }
 
 Channel.prototype.push = function(event, payload, resolve, reject) {

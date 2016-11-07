@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import { cellKey } from '../../utils'
 import CellInput from './CellInput'
 
 export default class Cell extends React.Component {
@@ -46,33 +45,32 @@ export default class Cell extends React.Component {
     return `number-input-${row}-${col}`
   }
 
-  renderContent(row, col, number) {
+  renderContent(coord, row, col, number) {
     if (!this.isEditable()) { return number }
     const name = this.inputName()
     const ref = (input) => this.numberInput = input
     const onSubmit = ::this.handleEnterValue
 
-    return <CellInput {...{name, ref, row, col, onSubmit}} />
+    return <CellInput {...{name, coord, ref, row, col, onSubmit}} />
   }
 
   render() {
-    const { col, row, value, color } = this.props
-    const id = cellKey(col, row)
+    const { coord, row, col, value, color, classes } = this.props
     const number = this.getNumber()
-    const classes = classnames("cell", `col-${col}`, `row-${row}`, {
+    const classNames = classnames(classes, {
       editable: this.isEditable()
     })
 
     return (
       <div
-        id={id}
+        id={coord}
         className={classes}
         style={{color: color}}
-        onClick={::this.handleClick(row, col)}
+        onClick={::this.handleClick(coord)}
         onDoubleClick={(e) => e.preventDefault()}
         onMouseOver={::this.handleMouseOver(row, col)}
         onMouseOut={::this.handleMouseOut(row, col)}>
-        {::this.renderContent(row, col, number)}
+        {::this.renderContent(coord, row, col, number)}
       </div>
     );
   }

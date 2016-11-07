@@ -7,6 +7,7 @@ defmodule SudokuWar.Game.Board do
   @type t :: %__MODULE__{ grid: Grid.t }
 
   defstruct [
+    game_id: nil,
     grid: nil,
   ]
 
@@ -28,7 +29,8 @@ defmodule SudokuWar.Game.Board do
   Creates a new board for a Game
   """
   def create(game_id) do
-    Agent.start(fn -> %__MODULE__{grid: build_grid} end, name: ref(game_id))
+    Logger.debug "Creating game #{game_id}"
+    Agent.start(fn -> %__MODULE__{grid: build_grid, game_id: game_id} end, name: ref(game_id))
   end
 
   @doc """
@@ -38,12 +40,33 @@ defmodule SudokuWar.Game.Board do
     Agent.get(ref(game_id), &(&1))
   end
 
-  def enter_value(game_id, {row, col, value}) do
+  def put_data(game_id, new_board) do
+    Agent.update(ref(game_id), fn(_) -> new_board end)
+  end
+
+  def enter_value(game_id, {key, value}) do
     {_, board_data} = Map.get_and_update(get_data(game_id), :grid, fn current_grid ->
-      { current_grid, Map.put(current_grid, "#{row}#{col}", value) }
+      { current_grid, Map.put(current_grid, key, value) }
     end)
 
+    IO.inspect "board_data.grid[#{key}] " <> board_data.grid[key]
+
+    put_data(game_id, board_data)
+
+    IO.inspect "get_data[#{key}] " <> get_data(game_id).grid[key]
+
     board_data
+  end
+
+  def destroy(game_id) do
+    case GenServer.whereis(ref(game_id)) do
+      nil ->
+        Logger.debug "Attempt to destroy unexisting Board for game #{game_id}"
+      pid ->
+        Logger.debug "Stopping board for game #{game_id}"
+
+        Agent.stop(pid, :normal, :infinity)
+    end
   end
 
   # Builds a default grid map

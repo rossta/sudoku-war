@@ -65,6 +65,10 @@ export default function reducer(state = initialState, action = {}) {
 
       return { ...state, selectedCell: [ row, col ] }
 
+    case Constants.GAME_BOARD_UPDATED:
+      game = { ...state.game, board: action.board }
+      return { ...state, game }
+
     default:
       return state
   }

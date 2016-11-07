@@ -10,19 +10,24 @@ export function joinGame(socket, playerId, gameId) {
     .then(() => dispatch(playerJoined(channel, playerId, gameId)))
     .catch(payload => dispatch(playerJoinedError(payload)))
 
-    channel.on('game:message_sent')
-    .then((payload) => {
+    channel.on('game:message_sent', (payload) => {
       dispatch({
         type: Constants.GAME_ADD_MESSAGE,
         message: payload.message,
       })
     })
 
-    channel.on('game:player_joined')
-    .then((payload) => {
+    channel.on('game:player_joined', (payload) => {
       dispatch({
         type: Constants.GAME_PLAYER_JOINED,
         playerId: payload.player_id,
+        board: payload.board,
+      })
+    })
+
+    channel.on('game:board_updated', (payload) => {
+      dispatch({
+        type: Constants.GAME_BOARD_UPDATED,
         board: payload.board,
       })
     })
@@ -85,15 +90,14 @@ export function selectCell(row, col) {
   }
 }
 
-export function enterValue(channel, row, col, value) {
+export function enterValue(channel, key, value) {
   return dispatch => {
     channel.push('game:enter_value', {
-      row,
-      col,
+      key,
       value
     })
     .then((payload) => {
-      console.log("Successfully entered value!", row, col, value)
+      console.log("Successfully entered value!", key, value)
     })
   }
 }

@@ -1,3 +1,3 @@
 export setDocumentTitle from './setDocumentTitle'
-export cellKey from './cellKey'
+export { cellKey, rowLetter } from './cellKey'
 export Channel from './Channel'

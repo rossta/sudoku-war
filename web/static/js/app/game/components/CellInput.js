@@ -7,10 +7,10 @@ export default class CellInput extends React.Component {
     e.preventDefault()
 
     if (e.keyCode === ENTER){
-      const { row, col, onSubmit } = this.props
+      const { coord, onSubmit } = this.props
       const value = e.target.value
 
-      onSubmit(row, col, value)
+      onSubmit(coord, value)
     }
   }
 
